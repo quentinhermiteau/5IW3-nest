@@ -8,8 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
-import { CreateTicketDto } from './dto/create-ticket.dto';
-import { UpdateTicketDto } from './dto/update-ticket.dto';
+import { CreateOrUpdateTicketDto } from './dto/create-update-ticket.dto';
 import { TicketsService } from './tickets.service';
 
 @ApiBearerAuth()
@@ -28,12 +27,15 @@ export class TicketsController {
   }
 
   @Post()
-  create(@Body() createTicketDto: CreateTicketDto) {
+  create(@Body() createTicketDto: CreateOrUpdateTicketDto) {
     return this.ticketsService.create(createTicketDto);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTicketDto: UpdateTicketDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTicketDto: CreateOrUpdateTicketDto,
+  ) {
     return this.ticketsService.update(+id, updateTicketDto);
   }
 

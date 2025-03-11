@@ -3,6 +3,7 @@ import { PrismaService } from 'src/prisma.service';
 
 interface CreateUser {
   email: string;
+  password?: string;
   firstName: string;
   lastName: string;
 }
@@ -30,6 +31,14 @@ export class UsersService {
     });
   }
 
+  findByEmail(email: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        email,
+      },
+    });
+  }
+
   createUser(body: CreateUser) {
     return this.prisma.user.create({
       data: body,
@@ -50,6 +59,7 @@ export class UsersService {
       },
     });
   }
+
   async deleteUser(id: number) {
     const user = await this.findOne(id);
 

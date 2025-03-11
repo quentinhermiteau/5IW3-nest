@@ -8,14 +8,18 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+import { Public } from 'src/decorators/public';
 import { CreateOrUpdateUserDto } from './dto/create-update-user.dto';
 import { FindAllUsersDto } from './dto/list-user.dto';
 import { UsersService } from './users.service';
 
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(private usersService: UsersService) {}
 
+  @Public()
   @Get()
   async findAll(@Query() query: FindAllUsersDto) {
     const users = await this.usersService.findAll(query);

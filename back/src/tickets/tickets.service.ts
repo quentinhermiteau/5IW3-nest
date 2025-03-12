@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
+import { Status } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 
 interface CreateOrUpdateTicket {
   title: string;
   content: string;
+  status?: Status;
 }
 
 @Injectable()
@@ -11,7 +13,12 @@ export class TicketsService {
   constructor(private readonly prisma: PrismaService) {}
 
   findAll() {
-    return this.prisma.ticket.findMany();
+    return this.prisma.ticket.findMany({
+      include: {
+        participants: true,
+        reviewers: true,
+      },
+    });
   }
 
   findOne(id: number) {

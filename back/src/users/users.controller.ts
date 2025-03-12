@@ -4,11 +4,14 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { User } from '@prisma/client';
+import { GetUser } from 'src/decorators/getUser';
 import { Public } from 'src/decorators/public';
 import { CreateOrUpdateUserDto } from './dto/create-update-user.dto';
 import { FindAllUsersDto } from './dto/list-user.dto';
@@ -27,8 +30,13 @@ export class UsersController {
     return users;
   }
 
-  @Get('/:id')
-  findOne(@Param('id') id: number) {
+  @Get('me')
+  userInfo(@GetUser() user: User) {
+    return user;
+  }
+
+  @Get(':id')
+  findOne(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
 
@@ -37,12 +45,12 @@ export class UsersController {
     return this.usersService.createUser(body);
   }
 
-  @Put('/:id')
+  @Put(':id')
   updateUser(@Param('id') id: number, @Body() body: CreateOrUpdateUserDto) {
     return this.usersService.updateUser(id, body);
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   deleteUser(@Param('id') id: number) {
     return this.usersService.deleteUser(id);
   }

@@ -6,9 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiBearerAuth } from '@nestjs/swagger';
 import { CreateOrUpdateTicketDto } from './dto/create-update-ticket.dto';
+import { ListTicketsDto } from './dto/list-tickets.dto';
 import { TicketsService } from './tickets.service';
 
 @ApiBearerAuth()
@@ -17,7 +19,7 @@ export class TicketsController {
   constructor(private readonly ticketsService: TicketsService) {}
 
   @Get()
-  findAll() {
+  findAll(@Query() query: ListTicketsDto) {
     return this.ticketsService.findAll();
   }
 

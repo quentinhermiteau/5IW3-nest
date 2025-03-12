@@ -20,7 +20,14 @@ export class UsersService {
 
   findAll(params: { page: number; limit: number }) {
     const { page, limit } = params;
-    return this.prisma.user.findMany({ skip: limit * (page - 1), take: limit });
+    return this.prisma.user.findMany({
+      skip: limit * (page - 1),
+      take: limit,
+      include: {
+        ticketParticipants: true,
+        ticketReviewers: true,
+      },
+    });
   }
 
   findOne(id: number) {

@@ -10,5 +10,18 @@ services:
     volumes:
       - 5iw3-nest:/var/lib/postgresql/data
 
+  minio:
+    image: quay.io/minio/minio
+    command: server /data --console-address ":9001"
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - 5iw3-minio:/data
+
 volumes:
   5iw3-nest: {}
+  5iw3-minio: {}

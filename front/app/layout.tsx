@@ -1,5 +1,4 @@
-import { AppSidebar } from "@/components/AppSidebar";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/providers/AuthProvider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -31,14 +30,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased px-4`}
       >
         <AuthProvider>
-          <SidebarProvider>
-            <AppSidebar />
-            <main className="w-screen">
-              <SidebarTrigger />
-              {children}
-            </main>
-          </SidebarProvider>
+          <main className="w-screen">{children}</main>
         </AuthProvider>
+        <Toaster />
       </body>
     </html>
   );

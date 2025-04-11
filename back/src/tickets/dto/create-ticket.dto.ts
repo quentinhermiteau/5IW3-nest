@@ -1,9 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Status } from '@prisma/client';
 import { Type } from 'class-transformer';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
-export class CreateOrUpdateTicketDto {
+export class CreateTicketDto {
   @ApiProperty()
   @IsString()
   @Type(() => String)
@@ -18,4 +18,12 @@ export class CreateOrUpdateTicketDto {
   @IsString()
   @Type(() => String)
   status?: Status = Status.TODO;
+
+  @ApiProperty({ type: 'string', format: 'binary', nullable: true })
+  @IsOptional()
+  file?: Express.Multer.File;
+
+  @ApiProperty()
+  @Type(() => Array<number>)
+  participants?: number[];
 }

@@ -5,6 +5,13 @@ interface SignInResponse {
   access_token: string;
 }
 
+type registerPayload = {
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+};
+
 export const signIn = async (
   email: string,
   password: string
@@ -13,4 +20,10 @@ export const signIn = async (
     email,
     password,
   });
+};
+
+export const register = async (
+  data: registerPayload
+): Promise<AxiosResponse<any>> => {
+  return api.post("auth/register", data);
 };

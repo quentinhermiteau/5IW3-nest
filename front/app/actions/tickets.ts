@@ -7,10 +7,21 @@ export interface Ticket {
   title: string;
   content: string;
   status: "TODO" | "IN_PROGRESS" | "BLOCKED" | "DONE";
+  filePath: string | null;
   createdAt: Date;
   updatedAt: Date;
   participants: User[];
   reviewers: User[];
+}
+
+interface TicketCreate {
+  title: string;
+  content: string;
+}
+
+export interface TicketUpdate {
+  participants?: string[];
+  reviewers?: string[];
 }
 
 export const findAllTickets = async (): Promise<AxiosResponse<Ticket[]>> => {
@@ -21,4 +32,17 @@ export const findOneTicket = async (
   id: number
 ): Promise<AxiosResponse<Ticket>> => {
   return api.get(`tickets/${id}`);
+};
+
+export const addTicket = async (
+  data: TicketCreate
+): Promise<AxiosResponse<Ticket>> => {
+  return api.post("tickets", data);
+};
+
+export const handleUpdateTicket = async (
+  id: number,
+  data: TicketUpdate
+): Promise<AxiosResponse<Ticket>> => {
+  return api.patch(`tickets/${id}`, data);
 };

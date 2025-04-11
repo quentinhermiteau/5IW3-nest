@@ -22,6 +22,12 @@ services:
     volumes:
       - 5iw3-minio:/data
 
+  maildev:
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+
 volumes:
   5iw3-nest: {}
   5iw3-minio: {}

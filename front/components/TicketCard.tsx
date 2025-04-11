@@ -24,8 +24,6 @@ export default function TicketCard({ ticket }: { ticket: Ticket }) {
       <CardTitle className="grid grid-cols-4 items-center">
         <div>{ticket.title}</div>
         <div className="col-start-3 col-span-2 flex justify-end items-center -space-x-2">
-          <span className="mr-2">Participants:</span>
-
           {ticket.participants.map((participant, index) => (
             <Avatar
               className="w-8 h-8 drop-shadow"
@@ -53,7 +51,6 @@ export default function TicketCard({ ticket }: { ticket: Ticket }) {
       <CardFooter className="grid grid-cols-4 items-center p-0">
         {formatDate(ticket.createdAt)}
         <div className="col-start-3 col-span-2 flex justify-end items-center -space-x-2">
-          <span className="mr-2">Reviewer:</span>
           {ticket.reviewers.map((reviewer, index) => (
             <Avatar
               className="w-8 h-8 drop-shadow"

@@ -1,4 +1,5 @@
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { MailerService } from '@nestjs-modules/mailer';
 import { Injectable } from '@nestjs/common';
 import { Status } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
@@ -19,7 +20,10 @@ interface UpdateTicket {
 
 @Injectable()
 export class TicketsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly mailerService: MailerService,
+  ) {}
 
   findAll() {
     return this.prisma.ticket.findMany({
@@ -65,8 +69,27 @@ export class TicketsService {
     });
   }
 
-  update(id: number, data: UpdateTicket) {
-    console.log(data);
+  async update(id: number, data: UpdateTicket) {
+    if (data.status) {
+      const ticket = await this.prisma.ticket.findFirst({
+        where: { id },
+        select: { status: true },
+      });
+      if (ticket?.status !== data.status) {
+        this.mailerService
+          .sendMail({
+            to: 'test@nestjs.com', // list of receivers
+            from: 'noreply@nestjs.com', // sender address
+            subject: 'Testing Nest MailerModule ✔', // Subject line
+            text: 'welcome', // plaintext body
+            html: '<b>welcome</b>', // HTML body content
+          })
+          .then(() => {
+            console.log('Email sent successfully');
+          })
+          .catch((e) => console.error(e));
+      }
+    }
 
     return this.prisma.ticket.update({
       where: { id },

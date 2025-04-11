@@ -44,5 +44,5 @@ export const handleUpdateTicket = async (
   id: number,
   data: TicketUpdate
 ): Promise<AxiosResponse<Ticket>> => {
-  return api.patch(`tickets/${id}`, data);
+  return api.patch(`tickets/${id}`, { ...data, status: "DONE" });
 };

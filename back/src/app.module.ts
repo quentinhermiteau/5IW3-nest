@@ -10,6 +10,7 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaService } from './prisma.service';
 import { TicketsModule } from './tickets/tickets.module';
 import { UsersModule } from './users/users.module';
+import { EventsGateway } from './events/events.gateway';
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { UsersModule } from './users/users.module';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    EventsGateway,
   ],
 })
 export class AppModule {}

@@ -20,6 +20,7 @@ interface TicketCreate {
 }
 
 export interface TicketUpdate {
+  status?: Ticket["status"];
   participants?: string[];
   reviewers?: string[];
 }
@@ -44,5 +45,5 @@ export const handleUpdateTicket = async (
   id: number,
   data: TicketUpdate
 ): Promise<AxiosResponse<Ticket>> => {
-  return api.patch(`tickets/${id}`, { ...data, status: "DONE" });
+  return api.patch(`tickets/${id}`, { ...data });
 };

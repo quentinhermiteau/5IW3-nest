@@ -1,5 +1,6 @@
 import { MailerModule } from '@nestjs-modules/mailer';
-import { PugAdapter } from '@nestjs-modules/mailer/dist/adapters/pug.adapter';
+import { HandlebarsAdapter } from '@nestjs-modules/mailer/dist/adapters/handlebars.adapter';
+
 import { Module } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 import { AppController } from './app.controller';
@@ -26,8 +27,8 @@ import { UsersModule } from './users/users.module';
         from: '"nest-modules" <modules@nestjs.com>',
       },
       template: {
-        dir: __dirname + '/templates',
-        adapter: new PugAdapter(),
+        dir: process.cwd() + '/src/templates',
+        adapter: new HandlebarsAdapter(),
         options: {
           strict: true,
         },

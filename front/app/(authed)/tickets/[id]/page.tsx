@@ -11,6 +11,13 @@ import {
 } from "@/app/actions/tickets";
 import { getAll, User } from "@/app/actions/user";
 import { MultiSelect } from "@/components/ui/multi-select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function TicketInfo() {
   const { id } = useParams<{ id: string }>();
@@ -26,6 +33,16 @@ export default function TicketInfo() {
   const fetchUsers = async () => {
     const users = await getAll();
     setUsers(users.data);
+  };
+
+  const handleStatusChange = (value: string) => {
+    console.log(value);
+
+    if (ticket) {
+      handleUpdateTicket(+id, {
+        status: value as Ticket["status"],
+      });
+    }
   };
 
   const handleChangeParticipants = (ids: string[]) => {
@@ -64,6 +81,20 @@ export default function TicketInfo() {
       )}
       <h2 className="font-bold text-3xl">{ticket.title}</h2>
       <p>{ticket.content}</p>
+      <div>
+        <span>Statut: </span>
+        <Select defaultValue={ticket.status} onValueChange={handleStatusChange}>
+          <SelectTrigger className="w-1/3">
+            <SelectValue placeholder="Select a status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="TODO">TODO</SelectItem>
+            <SelectItem value="IN_PROGRESS">IN_PROGRESS</SelectItem>
+            <SelectItem value="IN_PROGRESS">BLOCKED</SelectItem>
+            <SelectItem value="DONE">DONE</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
       <div>
         <span>Assigné à </span>
         <MultiSelect

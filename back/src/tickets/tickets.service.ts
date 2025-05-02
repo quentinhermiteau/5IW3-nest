@@ -73,16 +73,19 @@ export class TicketsService {
     if (data.status) {
       const ticket = await this.prisma.ticket.findFirst({
         where: { id },
-        select: { status: true },
+        select: { id: true, status: true },
       });
-      if (ticket?.status !== data.status) {
+      if (ticket && ticket?.status !== data.status) {
         this.mailerService
           .sendMail({
             to: 'test@nestjs.com', // list of receivers
             from: 'noreply@nestjs.com', // sender address
             subject: 'Testing Nest MailerModule ✔', // Subject line
-            text: 'welcome', // plaintext body
-            html: '<b>welcome</b>', // HTML body content
+            template: 'ticket-update',
+            context: {
+              name: 'John Doe',
+              id: ticket.id,
+            },
           })
           .then(() => {
             console.log('Email sent successfully');
